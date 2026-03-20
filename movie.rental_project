@@ -1,0 +1,212 @@
+# MOVIE RENTAL SYSTEM
+
+# PHASE 1: USER ----------------------------
+def user():
+    print("Welcome!")
+    username = input("Enter your username: ").strip()
+    print(f"Hello {username}, welcome!")
+
+user()
+
+# VARIABLES:
+movies = []
+
+# PHASE 2: MENU -------------------------------
+def menu():
+    print("MENU:")
+    print("""
+1 - Register item
+2 - List items
+3 - Rent item
+4 - Return item
+5 - Delete item
+6 - Exit
+""")
+
+# PHASE 3: REGISTER ----------------------------------
+def register():
+    movie_name = input("Enter the movie name: ").strip()
+
+    print("\nAvailable genres:")
+    print("""
+1 - Drama
+2 - Action
+3 - Thriller
+4 - Horror
+5 - Romance
+""")
+    genre_option = input("Choose the movie genre: ").strip()
+
+    if movie_name == "":
+        print("Enter a valid movie name!")
+        return
+
+    if movie_name.isdigit():
+        print("Use words to enter the movie name!")
+        return
+
+    if genre_option == "1":
+        genre = "Drama"
+    elif genre_option == "2":
+        genre = "Action"
+    elif genre_option == "3":
+        genre = "Thriller"
+    elif genre_option == "4":
+        genre = "Horror"
+    elif genre_option == "5":
+        genre = "Romance"
+    else:
+        print("Choose a valid genre option!")
+        return
+
+    movie = {
+        "name": movie_name,
+        "genre": genre,
+        "status": "Available"
+    }
+
+    movies.append(movie)
+    print("Movie successfully registered!")
+
+# PHASE 4: LIST ----------------------------------
+def list_movies():
+    if len(movies) == 0:
+        print("No movies registered!")
+        return
+
+    print("\nMOVIE LIST:")
+    for i, movie in enumerate(movies):
+        print(
+            f"{i + 1} - Name: {movie['name']} | "
+            f"Genre: {movie['genre']} | "
+            f"Status: {movie['status']}"
+        )
+
+# PHASE 5: RENT ----------------------------------
+def rent():
+    if len(movies) == 0:
+        print("No movies available in the system!")
+        return
+
+    print("\nREGISTERED MOVIES:")
+    for i, movie in enumerate(movies):
+        print(
+            f"{i + 1} - Name: {movie['name']} | "
+            f"Genre: {movie['genre']} | "
+            f"Status: {movie['status']}"
+        )
+
+    choice = input("Enter the number of the movie you want to rent: ").strip()
+
+    if choice.isdigit():
+        choice = int(choice)
+
+        if 1 <= choice <= len(movies):
+            selected_movie = movies[choice - 1]
+
+            if selected_movie["status"] == "Rented":
+                print("This movie is already rented!")
+            else:
+                selected_movie["status"] = "Rented"
+                print(f"The movie '{selected_movie['name']}' was rented successfully.")
+        else:
+            print("Invalid movie number!")
+    else:
+        print("Enter numbers only!")
+
+# PHASE 6: RETURN ----------------------------------
+def return_movie():
+    if len(movies) == 0:
+        print("No movies registered!")
+        return
+
+    print("\nREGISTERED MOVIES:")
+    for i, movie in enumerate(movies):
+        print(
+            f"{i + 1} - Name: {movie['name']} | "
+            f"Genre: {movie['genre']} | "
+            f"Status: {movie['status']}"
+        )
+
+    choice = input("Enter the number of the movie you want to return: ").strip()
+
+    if choice.isdigit():
+        choice = int(choice)
+
+        if 1 <= choice <= len(movies):
+            selected_movie = movies[choice - 1]
+
+            if selected_movie["status"] == "Available":
+                print("This movie is already available!")
+            else:
+                selected_movie["status"] = "Available"
+                print(f"The movie '{selected_movie['name']}' was returned successfully!")
+        else:
+            print("Invalid movie number!")
+    else:
+        print("Enter numbers only!")
+
+# PHASE 7: DELETE ITEM ----------------------------------
+def delete_item():
+    if len(movies) == 0:
+        print("No items added!")
+    else:
+        print("\nMOVIE LIST:")
+        for i, movie in enumerate(movies):
+            print(
+                f"{i + 1} - Name: {movie['name']} | "
+                f"Genre: {movie['genre']} | "
+                f"Status: {movie['status']}"
+            )
+
+        index = input("Enter the number of the movie you want to delete: ").strip()
+
+        if index.isdigit():
+            index = int(index)
+
+            if 1 <= index <= len(movies):
+                removed_movie = movies.pop(index - 1)
+                print(f"Item '{removed_movie['name']}' removed successfully!")
+            else:
+                print("Invalid index!")
+        else:
+            print("Enter numbers only!")
+
+# PHASE 8: EXIT ----------------------------------
+def exit_system():
+    option = input("Do you want to exit? (Y/N): ").strip().upper()
+
+    if option == "Y":
+        print("Shutting down...")
+        import time
+        time.sleep(3)
+        print("Program finished successfully!\nThank you for using our system!")
+        return True
+    else:
+        print("Returning to menu...")
+        return False
+
+# PHASE 9: RUN SYSTEM ----------------------------------
+def run_system():
+    while True:
+        menu()
+        option = input("Select an option: ").strip()
+
+        if option == "1":
+            register()
+        elif option == "2":
+            list_movies()
+        elif option == "3":
+            rent()
+        elif option == "4":
+            return_movie()
+        elif option == "5":
+            delete_item()
+        elif option == "6":
+            if exit_system():
+                break
+        else:
+            print("Invalid option. Please choose a valid option.")
+
+
+run_system()
